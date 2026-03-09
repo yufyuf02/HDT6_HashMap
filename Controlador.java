@@ -2,10 +2,10 @@ import java.util.HashMap;
 
 public class Controlador {
 
-    private HashMap diccionario;
+    private HashMapPersonalizado diccionario;
 
     public Controlador(){
-        diccionario = new HashMap(50);
+        diccionario = new HashMapPersonalizado(50);
         palabrasIniciales();
     }
 

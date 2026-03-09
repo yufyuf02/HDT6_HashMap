@@ -1,6 +1,6 @@
 public class HashFunction {
     
-    public int hashCode(String modismo) {
+    public int generarHash(String modismo) {
         
         String result = "";
 
@@ -11,15 +11,9 @@ public class HashFunction {
                 char initialCharacter = Character.isUpperCase(ch) ?  'A' : 'a';
                 result = result.concat(String.valueOf(ch - initialCharacter + 1));
             } else result = result + ch;
-        }
+        } 
 
-        return Integer.parseInt(result);
+        return modismo.length() * Integer.parseInt(result); // El resultado es el producto de la longitud del modismo con la concatenación de los valores de las letras (A=1, B=2, ...)
     }
 
-    public static void main(String[] args) {
-        HashFunction generarHash = new HashFunction();
-
-        int numero = generarHash.hashCode("Hola");
-        System.out.println(numero);
-    }
 }
