@@ -1,5 +1,4 @@
 import java.util.Scanner;
-// import Palabra;
 
 /**
  * HDT6: HashMap
@@ -9,18 +8,21 @@ import java.util.Scanner;
 
 public class Main {
 
+    // Inicialización del controlador
+    private static Controlador controlador = new Controlador();
+    
     public static void main(String[] args) {
+        System.out.println("");
         System.out.println("¡Bienvenid@!");
-        String resultado = menu();
-        System.out.println(resultado);
+        menu();
     }
 
-    private static String menu(){
+    // El menu principal del programa
+    private static void menu(){
         Scanner teclado = new Scanner(System.in);
         int seleccion;
 
         do { 
-            System.out.println("");
             System.out.println("*** Diccionario de Jergas / Modismos ***");
             System.out.println("");
 
@@ -30,38 +32,67 @@ public class Main {
             System.out.println("    (3) Cerrar el diccionario");
 
             seleccion = teclado.nextInt();
+            teclado.nextLine();                                             // Para limpiar el \n
 
             switch (seleccion) {
                 case 1:
+                    buscarPalabra(teclado);
+                    break;
                 case 2: 
-                    crearPalabra();
-                    teclado.close();
-                    System.out.println();
+                    crearPalabra(teclado);
+                    break;
                 case 3: 
-
+                    System.out.println("¡Gracias por usar!");
+                    teclado.close();
+                    System.exit(0);                                 // Un "0" es que terminó bien
+                    break;
                 default:
                     System.out.println("Opción inválida.");
             }
         } while (true);
     }
 
-    private static String crearPalabra() {
-        Scanner teclado = new Scanner(System.in);
+    // Para buscar una palabra
+    private static void buscarPalabra(Scanner teclado) {
+        System.out.println("");
+        System.out.println("Ingrese la palabra que quiere buscar");
+        String buscarPalabra = teclado.nextLine().trim().toLowerCase();
+        String resultado = controlador.buscar(buscarPalabra);           // Lo busca en el Controlador
+        if (resultado != null) {
+            System.out.println("'" + buscarPalabra + "'" + " significa");
+            System.err.println("'" + resultado + "'");
+        } else {
+            System.out.println("La palabra " + buscarPalabra + " no se encuentra en el diccionario.");
+        }
+    }
+
+    // Para agregar/crear una palabra
+    private static void crearPalabra(Scanner teclado) {
 
         while (true) { 
+            System.out.println("");
             System.out.println("Ingrese la palabra");
             String newPalabra = teclado.nextLine();
             System.out.println("Ingrese la definición");
             String newDefinicion = teclado.nextLine();
-    
+
+            System.out.println("Ha ingresado '" + newPalabra + "' que significa,");
+            System.out.println("'" + newDefinicion + "'");
             System.out.println("¿Está bien la palabra ingresada? (Sí / No)");
-            String confirmacion = teclado.nextLine();
-    
-            teclado.close();
-            String prueba = (newPalabra + " " + newDefinicion + " " + confirmacion);
-            return prueba;
+            String confirmacion = teclado.nextLine().trim().toLowerCase();
+
+            // Normalizar el "Sí" o "No"
+            if (confirmacion.equals("si") || confirmacion.equals("sí")) {
+                controlador.agregar(newPalabra, newDefinicion);
+                System.out.println(newPalabra + " fue ingresada correctamente. :)");
+            } else if (confirmacion.equals("no")) {
+                System.out.println("Por favor ingresar los datos nuevamente");
+            } else {
+                System.out.println("Por favor ingresar 'sí' o 'no'.");
+            }
         }
     }
+
 }
 
 /**
